@@ -1,6 +1,6 @@
 -include ../../Make.config
 
-all: i686 x86_64 mipsel ppc db2 sh4 mipsel15 ipkg
+all: i686 x86_64 mipsel ppc db2 sh4 mipsel15 ipkg vtunerc_driver
 
 i686:
 	$(MAKE) -C build/i686 all
@@ -29,6 +29,8 @@ ipkg:   mipsel
 arm:         
 	$(MAKE) -C build/arm
 
+vtunerc_driver:
+	$(MAKE) -C driver/vtunerc
 	
 clean:
 	$(MAKE) -C build/i686 clean
@@ -40,3 +42,4 @@ clean:
 	$(MAKE) -C build/mipsel15 clean
 	$(MAKE) -C pkgs clean
 	$(MAKE) -C build/arm clean
+	$(MAKE) -C driver/vtunerc clean
