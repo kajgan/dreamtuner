@@ -145,7 +145,8 @@ static int dvb_proxyfe_get_frontend(struct dvb_frontend *fe,
 		}
 		break;
 	default:
-		printk(PRINTK_ERR "%s unregognized tuner vtype = %d\n", __func__, vtunerc->vtype);
+		printk(KERN_ERR "vtunerc%d: unregognized tuner vtype = %d\n", vtunerc->idx,
+				vtunerc->vtype);
 		return -EINVAL;
 	}
 	p->frequency = msg.body.fe_params.frequency;
@@ -275,8 +276,8 @@ static int dvb_proxyfe_set_frontend(struct dvb_frontend *fe,
 		}
 		break;
 	default:
-		printk(PRINTK_ERR "%s: unregognized tuner vtype = %d\n", __func__,
-				vtunerc->vtype);
+		printk(KERN_ERR "vtunerc%d: unregognized tuner vtype = %d\n",
+				vtunerc->idx, vtunerc->vtype);
 		return -EINVAL;
 	}
 
@@ -543,7 +544,8 @@ int /*__devinit*/ vtunerc_frontend_init(struct vtunerc_ctx *vtunerc)
 	int ret;
 
 	if (vtunerc->fe) {
-		printk(PRINTK_NOTICE "%s: FE already initialized as type=%d\n", __func__, vtunerc->vtype);
+		printk(KERN_NOTICE "vtunerc%d: frontend already initialized as type=%d\n",
+				vtunerc->idx, vtunerc->vtype);
 		return 0;
 	}
 
@@ -561,7 +563,8 @@ int /*__devinit*/ vtunerc_frontend_init(struct vtunerc_ctx *vtunerc)
 		vtunerc->fe = dvb_proxyfe_qam_attach(vtunerc);
 		break;
 	default:
-		printk(PRINTK_ERR "%s unregognized tuner vtype = %d\n", __func__, vtunerc->vtype);
+		printk(KERN_ERR "vtunerc%d: unregognized tuner vtype = %d\n",
+				vtunerc->idx, vtunerc->vtype);
 		return -EINVAL;
 	}
 	ret = dvb_register_frontend(&vtunerc->dvb_adapter, vtunerc->fe);
