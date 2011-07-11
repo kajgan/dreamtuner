@@ -60,7 +60,7 @@ struct vtunerc_ctx {
 	/* internals */
 	int idx;
 	char *name;
-	__u8 vtype;
+	u8 vtype;
 	struct dvb_frontend_info *feinfo;
 	struct vtunerc_config *config;
 
@@ -100,14 +100,9 @@ int /*__devinit*/ vtunerc_frontend_clear(struct vtunerc_ctx *ctx);
 int vtunerc_ctrldev_xchange_message(struct vtunerc_ctx *ctx,
 					struct vtuner_message *msg,
 					int wait4response);
-
-#define dprintk(ctx, level, fmt, arg...) do {					\
-if (ctx && ctx->config && (*ctx->config.debug) >= level)				\
-	printk(KERN_DEBUG "vtunerc%d: %s" ctx->idx, fmt, __func__, ## arg);	\
+#define dprintk(ctx, fmt, arg...) do {					\
+if (ctx->config && (*ctx->config.debug))				\
+	printk(KERN_DEBUG "vtunerc%d: %s", ctx->idx, fmt, ## arg);	\
 } while (0)
-
-#define PRINTK_ERR ""
-#define PRINTK_WARN ""
-#define PRINTK_NOTICE ""
 
 #endif
