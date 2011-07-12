@@ -32,7 +32,7 @@
 
 #include "vtunerc_priv.h"
 
-#define VTUNERC_MODULE_VERSION "1.1p2"
+#define VTUNERC_MODULE_VERSION "1.1p3"
 
 DVB_DEFINE_MOD_OPT_ADAPTER_NR(adapter_nr);
 
@@ -371,6 +371,9 @@ static void __exit vtunerc_exit(void)
 
 	for (idx = 0; idx < config.devices; idx++) {
 		struct vtunerc_ctx *ctx = vtunerc_tbl[idx];
+		if(!ctx)
+			continue;
+		vtunerc_tbl[idx] = NULL;
 #ifdef CONFIG_PROC_FS
 		remove_proc_entry(ctx->procname, NULL);
 		kfree(ctx->procname);

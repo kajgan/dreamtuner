@@ -388,7 +388,13 @@ int vtunerc_ctrldev_xchange_message(struct vtunerc_ctx *ctx,
 		return 0;
 	}
 
+#if 0
 	BUG_ON(ctx->ctrldev_request.type != -1);
+#else
+	if(ctx->ctrldev_request.type != -1)
+		printk(KERN_WARNING "orphan request type %d detected\n", ctx->ctrldev_request.type);
+
+#endif
 
 	memcpy(&ctx->ctrldev_request, msg, sizeof(struct vtuner_message));
 	ctx->ctrldev_response.type = -1;
@@ -400,6 +406,7 @@ int vtunerc_ctrldev_xchange_message(struct vtunerc_ctx *ctx,
 
 	if (wait_event_interruptible(ctx->ctrldev_wait_response_wq,
 				ctx->ctrldev_response.type != -1)) {
+		ctx->ctrldev_request.type = -1;
 		up(&ctx->xchange_sem);
 		return -ERESTARTSYS;
 	}
